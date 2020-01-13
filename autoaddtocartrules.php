@@ -278,21 +278,29 @@ class cart_products_automatically
 		 *
 		 */
 
-		add_settings_field( 
+		/*add_settings_field( 
 			'cpa_login', 
 			__( 'Enable', 'cart-products-automatically' ), 
 			array($this,'cpa_loggedin'), 
 			'pluginPage', 
 			'cpa_website_visit' 
-		);
+		);*/
 
 	}
 
-
+	/**
+	 *This function will display under the header of select user role function 
+	 *
+	 */ 
 
 	function cpa_settings_login() {
 			echo __( 'Select user for which below scenarios will work.', 'cart-products-automatically' );	
 	}
+
+	/**
+	 *This function will create the selectdown tool for selecting the user role 
+	 *
+	 */
 
 	function cpa_user_render() {
 		$cpa_user=get_option( 'cpa_user');
@@ -300,9 +308,9 @@ class cart_products_automatically
 
 		?>
 		<select name="cpa_user">
-			<option value="guest" <?php selected("guest",$cpa_user,true); ?> >Guest</option>
-			<option value="loggedin" <?php selected("loggedin",$cpa_user,true); ?> >Logged-in</option>
-			<option value="both" <?php selected("both",$cpa_user,true); ?> >Both</option>
+			<option value="guest" <?php selected("guest" , $cpa_user , true); ?> >Guest</option>
+			<option value="loggedin" <?php selected("loggedin" , $cpa_user, true); ?> >Logged-in</option>
+			<option value="both" <?php selected("both" , $cpa_user , true); ?> >Both</option>
 			
 		</select>
 
@@ -597,7 +605,7 @@ class cart_products_automatically
 	}
 
 
-	function cpa_loggedin() { 
+	/*function cpa_loggedin() { 
 
 		$cpa_login=get_option('cpa_login');
 
@@ -606,7 +614,7 @@ class cart_products_automatically
 		<?php
 
 	}
-
+*/
 	/**
 	 *This function will display under the header of website visit section
 	 *
@@ -653,18 +661,27 @@ class cart_products_automatically
 
  		$cpa_user=get_option( 'cpa_user');
  		$user=true;
-
  		
  		if ($cpa_user == "loggedin") {
 
  			if ( is_user_logged_in() ) {
+			
 					$user=true;
-				}
+			}
+			else{
+					$user=false;			
+			}
  		}
- 		else{
- 			
- 			$user=true;
+ 		
+ 		if ($cpa_user == "guest") {
 
+ 			if ( is_user_logged_in() ) {
+			
+					$user=false;
+			}
+			else{
+					$user=true;			
+			}
  		}
 
  	if($user){
@@ -745,7 +762,7 @@ class cart_products_automatically
 }
 
 	/**
-	 *This function is for adding the product with particular id when
+	 *This function is for adding the product when
 	  the total of cart exceeds certain amount.
 	 *
 	 */
@@ -754,22 +771,27 @@ class cart_products_automatically
 
 		$cpa_user=get_option( 'cpa_user');
  		$user=true;
-
- 		if($cpa_user == "both"){
- 	
- 			$user=true;
-
- 		}
- 		elseif ($cpa_user == "loggedin") {
+ 		
+ 		if ($cpa_user == "loggedin") {
 
  			if ( is_user_logged_in() ) {
+			
 					$user=true;
-				}
+			}
+			else{
+					$user=false;			
+			}
  		}
- 		else{
- 			
- 			$user=true;
+ 		
+ 		if ($cpa_user == "guest") {
 
+ 			if ( is_user_logged_in() ) {
+			
+					$user=false;
+			}
+			else{
+					$user=true;			
+			}
  		}
 
  	if($user){
@@ -792,9 +814,11 @@ class cart_products_automatically
 	        	foreach ($product as $key => $value) {
 	        		$free_product_id=$value;
 	        	}
+				
 				//var_dump($free_product_id);
 				//exit();
-			if(get_option('cpa_removetotalfreeprd') == 1) {	
+			
+			/*if(get_option('cpa_removetotalfreeprd') == 1) {	
 				//echo "123";
 				//exit();
 				if ( isset( WC()->session ) && !is_null( WC()->session->get( 'removed_cart_contents' ) ) && WC()->session->get( 'removed_cart_contents' ) != '' ) { // checking is any products is removed or not.
@@ -814,7 +838,7 @@ class cart_products_automatically
 						
 						return; // do nothing if product is already removed by customer.
 					}
-			}
+			}*/
 									
 			if($remove){
 				
@@ -822,7 +846,7 @@ class cart_products_automatically
 								
 				if ( $woocommerce->cart->total >= $cart_total ) {
 					
-					if ( ! is_admin() && ! is_cart() && ! is_checkout() ) {
+					if ( ! is_admin() /*&& ! is_cart() && ! is_checkout()*/ ) {
 						//echo "123";					
 						//exit();
 				    	$free_product = get_option('cpa_totalcart');
@@ -924,7 +948,7 @@ class cart_products_automatically
 }
 	
 	/**
-	 *This function will automatically adds the product with particualar id
+	 *This function will automatically adds the free product
 	  to the cart when customer visits our website.
 	 *
 	 */
@@ -933,22 +957,27 @@ class cart_products_automatically
 
 		$cpa_user=get_option( 'cpa_user');
  		$user=true;
-
- 		if($cpa_user == "both"){
- 	
- 			$user=true;
-
- 		}
- 		elseif ($cpa_user == "loggedin") {
+ 		
+ 		if ($cpa_user == "loggedin") {
 
  			if ( is_user_logged_in() ) {
+			
 					$user=true;
-				}
+			}
+			else{
+					$user=false;			
+			}
  		}
- 		else{
- 			
- 			$user=true;
+ 		
+ 		if ($cpa_user == "guest") {
 
+ 			if ( is_user_logged_in() ) {
+			
+					$user=false;
+			}
+			else{
+					$user=true;			
+			}
  		}
 
  	if($user){
@@ -959,7 +988,7 @@ class cart_products_automatically
 
 			$product=true;
 
-			if(get_option('cpa_login') == 1) {	
+			/*if(get_option('cpa_login') == 1) {	
 
 				if ( is_user_logged_in() ) {
 					$product=true;
@@ -967,7 +996,7 @@ class cart_products_automatically
 				else{
 					$product=false;
 				}
-    		}
+    		}*/
 
     		if($product){	
 		
@@ -1011,7 +1040,7 @@ class cart_products_automatically
 
 
 	/**
-	 *This function will remove the automatically added product when the product of particular category is removed by the user. 
+	 *This function will remove the automatically added product when the product is removed by the user. 
 	 *
 	 */
 
