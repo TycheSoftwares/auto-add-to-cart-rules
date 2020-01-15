@@ -247,7 +247,7 @@ class Aar_Settings
 	}
 
 	/**
-	 *This function will create the selectdown tool for selecting the user role 
+	 * This function will create the selectdown tool for selecting the user role 
 	 *
 	 */
 
