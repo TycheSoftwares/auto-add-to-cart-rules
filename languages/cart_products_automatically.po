@@ -1,0 +1,99 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: cart-products-automatically\n"
+"POT-Creation-Date: 2019-12-26 13:37+0530\n"
+"PO-Revision-Date: 2019-12-26 13:38+0530\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: cart_products_automatically.php:84
+msgid "Add to Cart Action"
+msgstr ""
+
+#: cart_products_automatically.php:91 cart_products_automatically.php:124
+#: cart_products_automatically.php:158
+msgid "Enable"
+msgstr ""
+
+#: cart_products_automatically.php:99
+msgid "Category id"
+msgstr ""
+
+#: cart_products_automatically.php:107 cart_products_automatically.php:140
+#: cart_products_automatically.php:166
+msgid "Product id"
+msgstr ""
+
+#: cart_products_automatically.php:117
+msgid "Cart Total"
+msgstr ""
+
+#: cart_products_automatically.php:132
+msgid "Amount"
+msgstr ""
+
+#: cart_products_automatically.php:151
+msgid "Website Visit"
+msgstr ""
+
+#: cart_products_automatically.php:183 cart_products_automatically.php:267
+msgid "Enables add to cart action function."
+msgstr ""
+
+#: cart_products_automatically.php:195 cart_products_automatically.php:279
+msgid "Enter category id on which function will work."
+msgstr ""
+
+#: cart_products_automatically.php:206
+msgid ""
+"Enter id of a product which will be added to the cart when product of "
+"particular category is added to the cart."
+msgstr ""
+
+#: cart_products_automatically.php:214
+msgid ""
+"When product of particualr category is added to cart, then also add product "
+"with particular id to the cart."
+msgstr ""
+
+#: cart_products_automatically.php:225
+msgid "Enables cart total function."
+msgstr ""
+
+#: cart_products_automatically.php:237
+msgid ""
+"Enter amount of cart total on exceeds of which this function will work ."
+msgstr ""
+
+#: cart_products_automatically.php:248
+msgid ""
+"Enter id of a product which will be added to the cart when cart total will "
+"exceeds by certain amount."
+msgstr ""
+
+#: cart_products_automatically.php:256
+msgid "When total of cart exceeds by certain amount."
+msgstr ""
+
+#: cart_products_automatically.php:287
+msgid "Adding product to the cart when a customer visits your website."
+msgstr ""
+
+#: cart_products_automatically.php:298
+msgid "Automatically Add a Product Into Cart."
+msgstr ""
+
+#: cart_products_automatically.php:299
+msgid ""
+"This will automatically add a product to your WooCommerce cart in 3 "
+"different scenarios."
+msgstr ""
