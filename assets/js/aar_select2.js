@@ -36,8 +36,5 @@ jQuery(document).ready(function($) {
 					    });  
 					});
 				});
-     
-   							 // This does the ajax request
-   
-              
+
 });
