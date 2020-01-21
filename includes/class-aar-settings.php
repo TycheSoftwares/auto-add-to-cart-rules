@@ -37,13 +37,14 @@ class Aar_Settings {
 		register_setting( 'pluginPage', 'aar_visit' );
 		register_setting( 'pluginPage', 'aar_checkvisit' );
 		register_setting( 'pluginPage', 'aar_login' );
+		register_setting( 'pluginPage', 'aar_price' );
 
 		/**
 		 *This will display the header of the section(For user)
 		 */
 		add_settings_section(
 			'aar_user_login',
-			__( 'General Settings', 'cart-products-automatically' ),
+			__( 'General Settings', 'auto-addtocart-rules' ),
 			array( $this, 'aar_settings_login' ),
 			'pluginPage'
 		);
@@ -53,7 +54,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_user',
-			__( 'Select User', 'cart-products-automatically' ),
+			__( 'Select User Role', 'auto-addtocart-rules' ),
 			array( $this, 'aar_user_select' ),
 			'pluginPage',
 			'aar_user_login'
@@ -64,8 +65,19 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_firstorder',
-			__( 'Enable', 'cart-products-automatically' ),
+			__( 'First Order Discount', 'auto-addtocart-rules' ),
 			array( $this, 'aar_first_order' ),
+			'pluginPage',
+			'aar_user_login'
+		);
+
+		/**
+		 * This setting field is for enabling to set the price of free product to 0.
+		 */
+		add_settings_field(
+			'aar_price',
+			__( 'Gift A Product', 'auto-addtocart-rules' ),
+			array( $this, 'aar_set_price' ),
 			'pluginPage',
 			'aar_user_login'
 		);
@@ -75,7 +87,7 @@ class Aar_Settings {
 		 */
 		add_settings_section(
 			'aar_atc_add_to_cart_action',
-			__( 'Add to Cart Action', 'cart-products-automatically' ),
+			__( 'Add to Cart Action', 'auto-addtocart-rules' ),
 			array( $this, 'aar_atc_settings_add_to_cart_action' ),
 			'pluginPage'
 		);
@@ -85,7 +97,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_atc_checkfreeprd',
-			__( 'Enable', 'cart-products-automatically' ),
+			__( 'Enable', 'auto-addtocart-rules' ),
 			array( $this, 'aar_atc_product_enable' ),
 			'pluginPage',
 			'aar_atc_add_to_cart_action'
@@ -96,7 +108,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_oneprd',
-			__( 'Multiple Category\'s', 'cart-products-automatically' ),
+			__( 'Multiple Category\'s', 'auto-addtocart-rules' ),
 			array( $this, 'aar_atc_category' ),
 			'pluginPage',
 			'aar_atc_add_to_cart_action'
@@ -107,7 +119,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_freeprd',
-			__( 'Multple Product\'s', 'cart-products-automatically' ),
+			__( 'Multple Product\'s', 'auto-addtocart-rules' ),
 			array( $this, 'aar_atc_product' ),
 			'pluginPage',
 			'aar_atc_add_to_cart_action'
@@ -118,7 +130,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_removefreeprd',
-			__( 'Enable', 'cart-products-automatically' ),
+			__( 'Enable', 'auto-addtocart-rules' ),
 			array( $this, 'aar_atc_remove_product' ),
 			'pluginPage',
 			'aar_atc_add_to_cart_action'
@@ -129,7 +141,7 @@ class Aar_Settings {
 		 */
 		add_settings_section(
 			'aar_ct_cart_total',
-			__( 'Cart Total', 'cart-products-automatically' ),
+			__( 'Cart Total', 'auto-addtocart-rules' ),
 			array( $this, 'aar_ct_settings_cart_total' ),
 			'pluginPage'
 		);
@@ -139,7 +151,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_checktotalcart',
-			__( 'Enable', 'cart-products-automatically' ),
+			__( 'Enable', 'auto-addtocart-rules' ),
 			array( $this, 'aar_ct_enable' ),
 			'pluginPage',
 			'aar_ct_cart_total'
@@ -150,7 +162,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_enteramt',
-			__( 'Amount', 'cart-products-automatically' ),
+			__( 'Amount', 'auto-addtocart-rules' ),
 			array( $this, 'aar_ct_enter_amount' ),
 			'pluginPage',
 			'aar_ct_cart_total'
@@ -161,7 +173,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_totalcart',
-			__( 'Product', 'cart-products-automatically' ),
+			__( 'Product', 'auto-addtocart-rules' ),
 			array( $this, 'aar_ct_product' ),
 			'pluginPage',
 			'aar_ct_cart_total'
@@ -172,7 +184,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_removetotalfreeprd',
-			__( 'Enable', 'cart-products-automatically' ),
+			__( 'Enable', 'auto-addtocart-rules' ),
 			array( $this, 'aar_ct_remove_product' ),
 			'pluginPage',
 			'aar_ct_cart_total'
@@ -183,7 +195,7 @@ class Aar_Settings {
 		 */
 		add_settings_section(
 			'aar_wvf_website_visit',
-			__( 'Website Visit', 'cart-products-automatically' ),
+			__( 'Website Visit', 'auto-addtocart-rules' ),
 			array( $this, 'aar_ct_settings_website_visit' ),
 			'pluginPage'
 		);
@@ -193,7 +205,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_checkvisit',
-			__( 'Enable', 'cart-products-automatically' ),
+			__( 'Enable', 'auto-addtocart-rules' ),
 			array( $this, 'aar_wvf_product_enable' ),
 			'pluginPage',
 			'aar_wvf_website_visit'
@@ -204,7 +216,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_visit',
-			__( 'Product', 'cart-products-automatically' ),
+			__( 'Product', 'auto-addtocart-rules' ),
 			array( $this, 'aar_wvf_product' ),
 			'pluginPage',
 			'aar_wvf_website_visit'
@@ -215,7 +227,7 @@ class Aar_Settings {
 	 * This function will display under the header of select user role function
 	 */
 	public function aar_settings_login() {
-			echo '';
+
 	}
 
 	/**
@@ -230,15 +242,27 @@ class Aar_Settings {
 			<option value="both" <?php selected( 'both', $aar_user, true ); ?> >Both</option>
 		</select>
 		<?php
+			esc_attr_e( 'All scenarios will be affected only to the selected user.', 'auto-addtocart-rules' );
 	}
 
 	/**
-	 * This function will create the selectdown tool for selecting the user role
+	 * This function will create the checkbox for enabling  automatically add the product to cart only when the customer places their first order.
 	 */
 	public function aar_first_order() {
 		$aar_firstorder = get_option( 'aar_firstorder' );
 		?>
-		<input type='checkbox' name='aar_firstorder' <?php checked( 1, $aar_firstorder, true ); ?> value='1'> <?php esc_attr_e( 'Enabling this will automatically add the product to cart only when the customer places their first order.', 'cart-products-automatically' ); ?>
+		<input type='checkbox' name='aar_firstorder' <?php checked( 1, $aar_firstorder, true ); ?> value='1'> <?php esc_attr_e( 'Enabling this will automatically add the product to cart only when the customer places their first order.', 'auto-addtocart-rules' ); ?>
+		<?php
+	}
+
+
+	/**
+	 * This function will create the checkbox to enable to set the free product price to 0.
+	 */
+	public function aar_set_price() {
+		$aar_price = get_option( 'aar_price' );
+		?>
+		<input type='checkbox' name='aar_price' <?php checked( 1, $aar_price, true ); ?> value='1'> <?php esc_attr_e( 'Enabling this will set the price of the automatically added product to the cart to 0.', 'auto-addtocart-rules' ); ?>
 		<?php
 	}
 
@@ -248,7 +272,7 @@ class Aar_Settings {
 	public function aar_atc_product_enable() {
 		$aar_checkfreeprd = get_option( 'aar_checkfreeprd' );
 		?>
-		<input type='checkbox' name='aar_checkfreeprd' <?php checked( 1, $aar_checkfreeprd, true ); ?> value='1'> <?php esc_attr_e( 'Enables add to cart action function.', 'cart-products-automatically' ); ?>
+		<input type='checkbox' name='aar_checkfreeprd' <?php checked( 1, $aar_checkfreeprd, true ); ?> value='1'> <?php esc_attr_e( 'Enable this to automatically add multiple product to the cart when the product of multiple category is added to cart..', 'auto-addtocart-rules' ); ?>
 		<?php
 	}
 
@@ -282,7 +306,7 @@ class Aar_Settings {
 		}
 		?>
 		</select>
-		</br><p> <?php esc_attr_e( 'Select category\'s  on which function will work.', 'cart-products-automatically' ); ?></p>
+		</br><p> <?php esc_attr_e( 'Select category\'s  on which function will work.', 'auto-addtocart-rules' ); ?></p>
 		<?php
 
 	}
@@ -323,7 +347,7 @@ class Aar_Settings {
 
 		?>
 		</select>
-		</br><p> <?php esc_attr_e( 'Select product\'s which will be added to the cart when product of particular category is added to the cart.', 'cart-products-automatically' ); ?> </p>
+		</br><p> <?php esc_attr_e( 'Select product\'s which will be added to the cart when product of particular category is added to the cart.', 'auto-addtocart-rules' ); ?> </p>
 		<?php
 
 	}
@@ -334,7 +358,7 @@ class Aar_Settings {
 	public function aar_atc_remove_product() {
 		$aar_removefreeprd = get_option( 'aar_removefreeprd' );
 		?>
-		<input type='checkbox' name='aar_removefreeprd' <?php checked( 1, $aar_removefreeprd, true ); ?> value='1'> <?php esc_attr_e( 'Enabling this will not add the free product again to the cart once it is removed by the user.', 'cart-products-automatically' ); ?>
+		<input type='checkbox' name='aar_removefreeprd' <?php checked( 1, $aar_removefreeprd, true ); ?> value='1'> <?php esc_attr_e( 'Enabling this will not add the free product again to the cart once it is removed by the user.', 'auto-addtocart-rules' ); ?>
 		<?php
 	}
 
@@ -342,7 +366,7 @@ class Aar_Settings {
 	 * This function will display under the header of add to cart section
 	 */
 	public function aar_atc_settings_add_to_cart_action() {
-		echo esc_attr_e( 'When product of multiple category\'s is added to cart, then also add multiple product to the cart.', 'cart-products-automatically' );
+
 	}
 
 	/**
@@ -351,7 +375,7 @@ class Aar_Settings {
 	public function aar_ct_enable() {
 		$aar_checktotalcart = get_option( 'aar_checktotalcart' );
 		?>
-		<input type='checkbox' name='aar_checktotalcart' <?php checked( 1, $aar_checktotalcart, true ); ?> value='1'> <?php esc_attr_e( 'Enables cart total function.', 'cart-products-automatically' ); ?>
+		<input type='checkbox' name='aar_checktotalcart' <?php checked( 1, $aar_checktotalcart, true ); ?> value='1'> <?php esc_attr_e( 'Enable this to automatically add the product to cart when total of cart exceeds by certain amount.', 'auto-addtocart-rules' ); ?>
 		<?php
 	}
 
@@ -365,7 +389,7 @@ class Aar_Settings {
 		}
 		?>
 		<input type='text' name='aar_enteramt' value='<?php echo esc_attr( $aar_enteramt ); ?>'>
-		</br><p> <?php esc_attr_e( 'Enter amount of cart total on exceeds of which this function will work .', 'cart-products-automatically' ); ?> </p>
+		</br><p> <?php esc_attr_e( 'Enter amount of cart total on exceeds of which this function will work .', 'auto-addtocart-rules' ); ?> </p>
 		<?php
 	}
 
@@ -403,7 +427,7 @@ class Aar_Settings {
 
 		?>
 		</select>
-		</br><p> <?php esc_attr_e( 'Select product which will be added to the cart when cart total will exceeds by certain amount.', 'cart-products-automatically' ); ?> </p>
+		</br><p> <?php esc_attr_e( 'Select product which will be added to the cart when cart total will exceeds by certain amount.', 'auto-addtocart-rules' ); ?> </p>
 		<?php
 	}
 
@@ -413,7 +437,7 @@ class Aar_Settings {
 	public function aar_ct_remove_product() {
 		$aar_removetotalfreeprd = get_option( 'aar_removetotalfreeprd' );
 		?>
-		<input type='checkbox' name='aar_removetotalfreeprd' <?php checked( 1, $aar_removetotalfreeprd, true ); ?> value='1'> <?php esc_attr_e( 'Enabling this will not add the free product again to the cart once it is removed by the user.', 'cart-products-automatically' ); ?>
+		<input type='checkbox' name='aar_removetotalfreeprd' <?php checked( 1, $aar_removetotalfreeprd, true ); ?> value='1'> <?php esc_attr_e( 'Enabling this will not add the free product again to the cart once it is removed by the user.', 'auto-addtocart-rules' ); ?>
 		<?php
 	}
 
@@ -421,7 +445,7 @@ class Aar_Settings {
 	 * This function will display under the header of cart total section
 	 */
 	public function aar_ct_settings_cart_total() {
-		echo esc_attr_e( 'When total of cart exceeds by certain amount.', 'cart-products-automatically' );
+
 	}
 
 	/**
@@ -433,7 +457,7 @@ class Aar_Settings {
 			$aar_checkvisit = '';
 		}
 		?>
-		<input type='checkbox' name='aar_checkvisit' <?php checked( 1, $aar_checkvisit, true ); ?> value='1'> <?php esc_attr_e( 'Enables website visit function.', 'cart-products-automatically' ); ?>
+		<input type='checkbox' name='aar_checkvisit' <?php checked( 1, $aar_checkvisit, true ); ?> value='1'> <?php esc_attr_e( 'Enable this to automatically add the product to cart when customer visits your website.', 'auto-addtocart-rules' ); ?>
 		<?php
 	}
 
@@ -470,7 +494,7 @@ class Aar_Settings {
 		}
 		?>
 		</select>
-		</br><p> <?php esc_attr_e( 'Enter product which will be added to cart.', 'cart-products-automatically' ); ?></p>
+		</br><p> <?php esc_attr_e( 'Enter product which will be added to cart.', 'auto-addtocart-rules' ); ?></p>
 		<?php
 	}
 
@@ -478,7 +502,7 @@ class Aar_Settings {
 	 * This function will display under the header of website visit section
 	 */
 	public function aar_ct_settings_website_visit() {
-		echo esc_attr__( 'Adding product to the cart when a customer visits your website.', 'cart-products-automatically' );
+
 	}
 
 	/**
@@ -488,8 +512,8 @@ class Aar_Settings {
 		?>
 			<form action='options.php' method='post'>
 
-				<h2> <?php esc_attr_e( 'Automatically Add a Product Into Cart.', 'cart-products-automatically' ); ?></h2>
-				<p> <?php esc_attr_e( 'This will automatically add a product to your WooCommerce cart in 3 different scenarios.', 'cart-products-automatically' ); ?></p>
+				<h2> <?php esc_attr_e( 'Automatically Add a Product Into Cart.', 'auto-addtocart-rules' ); ?></h2>
+				<p> <?php esc_attr_e( 'This will automatically add a product to your WooCommerce cart in 3 different scenarios.', 'auto-addtocart-rules' ); ?></p>
 				</br>
 
 				<?php
