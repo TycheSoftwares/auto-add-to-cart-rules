@@ -8,7 +8,7 @@
  * Requires PHP:4.3
  * Author: Shasvat Shah
  * Author URI:https://www.shasvat.com
- * Text Domain:cart-products-automatically
+ * Text Domain:auto-addtocart-rules
  * Domain Path: /languages/
  *
  * @package Auto_Add_To_Cart_Rules
@@ -39,13 +39,14 @@ class Auto_Add_To_Cart_Rules {
 	public function aar_hooks() {
 
 		if ( $this->is_woocommerce_active() ) {
-			add_action( 'admin_menu', array( $this, 'aar_add_admin_menu' ) );
+			add_action( 'admin_menu', array( $this, 'aar_add_admin_menu' ), 80 );
 			add_action( 'woocommerce_add_to_cart', array( $this, 'aar_add_oneproduct_to_cart' ), 10, 2 );
 			add_action( 'template_redirect', array( $this, 'aar_add_freeproduct_to_cart' ) );
 			add_action( 'template_redirect', array( $this, 'remove_product_from_cart' ) );
 			add_action( 'template_redirect', array( $this, 'aar_add_visitproduct_to_cart' ) );
 			add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'aar_enqueue_script' ) );
+			add_action( 'woocommerce_before_calculate_totals', array( $this, 'aar_setprice' ) );
 		} else {
 			add_action( 'admin_notices', array( $this, 'aar_error_notice' ) );
 		}
@@ -107,7 +108,7 @@ class Auto_Add_To_Cart_Rules {
 	 */
 	public function load_plugin_textdomain() {
 
-		load_plugin_textdomain( 'cart-products-automatically', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'auto-addtocart-rules', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
@@ -115,7 +116,7 @@ class Auto_Add_To_Cart_Rules {
 	 */
 	public function aar_add_admin_menu() {
 
-		add_menu_page( 'Cart Products Automatically', 'Cart Products Automatically', 'manage_options', 'aar_cart_products_automatically', array( 'Aar_settings', 'aar_options_page' ) );
+		add_submenu_page( 'woocommerce', 'Add To Cart Rules', 'Add To Cart Rules', 'manage_options', 'aar_cart_products_automatically', array( 'Aar_settings', 'aar_options_page' ) );
 
 	}
 
@@ -290,9 +291,8 @@ class Auto_Add_To_Cart_Rules {
 
 				$remove = true;
 				global $woocommerce;
-				$cart_total              = get_option( 'aar_enteramt' );
-				$list_of_removed_product = array(); // In this we will add all the removed product ids.
-				$free_product            = get_option( 'aar_totalcart' );
+				$cart_total   = get_option( 'aar_enteramt' );
+				$free_product = get_option( 'aar_totalcart' );
 
 				$array = array_values( $free_product );
 
@@ -303,6 +303,8 @@ class Auto_Add_To_Cart_Rules {
 				foreach ( $product as $key => $value ) {
 					$free_product_id = $value;
 				}
+
+				$remove = $this->ct_remove_product();
 
 				if ( $remove ) {
 
@@ -401,42 +403,38 @@ class Auto_Add_To_Cart_Rules {
 		if ( $user_role ) {
 
 			if ( get_option( 'aar_checkvisit' ) === '1' ) {
-				$product = true;
 
-				if ( $product ) {
+				if ( ! is_admin() && ! is_cart() && ! is_checkout() ) {
 
-					if ( ! is_admin() && ! is_cart() && ! is_checkout() ) {
+					$product_id = get_option( 'aar_visit' ); // Product Id of the free product which will get added to cart.
+					$array      = array_values( $product_id );
 
-						$product_id = get_option( 'aar_visit' ); // Product Id of the free product which will get added to cart.
-						$array      = array_values( $product_id );
+					foreach ( $array as $key => $value ) {
+						$product = $value;
+					}
+					foreach ( $product as $key => $value ) {
+						$products = $value;
+					}
+					$found = false;
 
-						foreach ( $array as $key => $value ) {
-							$product = $value;
-						}
-						foreach ( $product as $key => $value ) {
-							$products = $value;
-						}
-						$found = false;
+					// check if product already in cart.
+					if ( count( WC()->cart->get_cart() ) > 0 ) {
 
-						// check if product already in cart.
-						if ( count( WC()->cart->get_cart() ) > 0 ) {
+						foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
+							$_product = $values['data'];
 
-							foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
-								$_product = $values['data'];
-
-								if ( $_product->get_id() === (int) $products ) {
-									$found = true;
-								}
+							if ( $_product->get_id() === (int) $products ) {
+								$found = true;
 							}
+						}
 
-							// if product not found, add it.
-							if ( ! $found ) {
-								WC()->cart->add_to_cart( $products );
-							}
-						} else {
-							// if no products in cart, add it.
+						// if product not found, add it.
+						if ( ! $found ) {
 							WC()->cart->add_to_cart( $products );
 						}
+					} else {
+						// if no products in cart, add it.
+						WC()->cart->add_to_cart( $products );
 					}
 				}
 			}
@@ -486,6 +484,112 @@ class Auto_Add_To_Cart_Rules {
 						// Remove it from the cart by un-setting it.
 						unset( WC()->cart->cart_contents[ $free_pro_cart_id ] );
 					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * This function will not automatically add the product to the cart once it is removed by the customer.
+	 */
+	public function ct_remove_product() {
+
+		$remove                  = true;
+		$aar_removetotalfreeprd  = get_option( 'aar_removetotalfreeprd' );
+		$list_of_removed_product = array(); // In this we will add all the removed product ids.
+		$free_product            = get_option( 'aar_totalcart' );
+		$array                   = array_values( $free_product );
+
+		foreach ( $array as $key => $value ) {
+			$product = $value;
+		}
+
+		foreach ( $product as $key => $value ) {
+			$free_product_id = $value;
+		} // Product Id of the free product which will get added to cart.
+
+		if ( '1' === $aar_removetotalfreeprd ) {
+
+			if ( isset( WC()->session ) && ! is_null( WC()->session->get( 'removed_cart_contents' ) ) && WC()->session->get( 'removed_cart_contents' ) !== '' ) { // checking is any products is removed or not.
+
+				$removed_cart_contents = WC()->session->get( 'removed_cart_contents' );
+
+				foreach ( $removed_cart_contents as $key => $value ) {
+					$list_of_removed_product[] = $value['product_id'];
+				}
+
+				$list_of_removed_product = array_unique( $list_of_removed_product );
+
+			}
+			if ( in_array( (int) $free_product_id, $list_of_removed_product, true ) ) { // If free product found in list of 																	removed product then do nothing.
+					$remove = false;
+
+			}
+		}
+
+		return $remove;
+	}
+
+	/**
+	 * This function is to set the price of the automatically added product to the cart to 0.
+	 *
+	 * @param array $cart_object Cart object.
+	 */
+	public function aar_setprice( $cart_object ) {
+
+		if ( get_option( 'aar_price' ) === '1' ) {
+
+			$atc_free_product_ids = '';
+			$ct_free_product_ids  = '';
+			$wvf_free_product_ids = '';
+
+			$custom_price = 0; // This will be your custome price.
+
+			if ( get_option( 'aar_checkfreeprd' ) === '1' ) {
+
+				$aar_free    = get_option( 'aar_freeprd' );
+				$aar_freeprd = $aar_free['productid'];
+				foreach ( $aar_freeprd as $key => $value ) {
+					$atc_free_product_ids = $value;
+				}
+			}
+
+			if ( get_option( 'aar_checktotalcart' ) === '1' ) {
+
+				$free_product = get_option( 'aar_totalcart' );
+				$array        = array_values( $free_product );
+
+				foreach ( $array as $key => $value ) {
+					$product = $value;
+				}
+				foreach ( $product as $key => $value ) {
+					$ct_free_product_ids = $value;
+				}
+			}
+
+			if ( get_option( 'aar_checkvisit' ) === '1' ) {
+
+				$product_id = get_option( 'aar_visit' );
+				$array      = array_values( $product_id );
+
+				foreach ( $array as $key => $value ) {
+					$product = $value;
+				}
+				foreach ( $product as $key => $value ) {
+					$wvf_free_product_ids = $value;
+				}
+			}
+
+			$free_product_id = array( $atc_free_product_ids, $ct_free_product_ids, $wvf_free_product_ids );
+
+			foreach ( $cart_object->cart_contents as $key => $value ) {
+					$_product = $value['data'];
+					$product  = $_product->get_id();
+
+				if ( in_array( $product, array_map( 'intval', $free_product_id ), true ) ) {
+
+						$value['data']->set_price( $custom_price );
+
 				}
 			}
 		}
