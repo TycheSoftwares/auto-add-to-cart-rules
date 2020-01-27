@@ -38,13 +38,13 @@ class Auto_Add_To_Cart_Rules {
 	 */
 	public function aar_hooks() {
 
-		if ( $this->is_woocommerce_active() ) {
+		if ( $this->aar_is_woocommerce_active() ) {
 			add_action( 'admin_menu', array( $this, 'aar_add_admin_menu' ), 80 );
 			add_action( 'woocommerce_add_to_cart', array( $this, 'aar_add_oneproduct_to_cart' ), 10, 2 );
 			add_action( 'template_redirect', array( $this, 'aar_add_freeproduct_to_cart' ) );
-			add_action( 'template_redirect', array( $this, 'remove_product_from_cart' ) );
+			add_action( 'template_redirect', array( $this, 'aar_remove_product_from_cart' ) );
 			add_action( 'template_redirect', array( $this, 'aar_add_visitproduct_to_cart' ) );
-			add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ) );
+			add_action( 'plugins_loaded', array( $this, 'aar_load_plugin_textdomain' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'aar_enqueue_script' ) );
 			add_action( 'woocommerce_before_calculate_totals', array( $this, 'aar_setprice' ) );
 		} else {
@@ -71,9 +71,10 @@ class Auto_Add_To_Cart_Rules {
 	 * For Enqueuing JS script
 	 */
 	public function aar_enqueue_script() {
-		wp_enqueue_script( 'jquery-ui-selectable', plugin_dir_url( __FILE__ ) . '/wp-includes/js/jquery/ui/jquery.ui.selectable.min.js', array( 'jquery' ), 'aar_version', true );
-		wp_enqueue_script( 'aar_select2', plugin_dir_url( __FILE__ ) . '/assets/js/aar_select2.js', array( 'jquery', 'select2' ), 'aar_version', true );
-		wp_localize_script( 'aar_select2-ajax-script', 'aar_select2_ajax_obj', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+		wp_enqueue_style( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css', 'AAR_VERSION', true );
+		wp_enqueue_script( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js', array( 'jquery' ), 'AAR_VERSION', true );
+		wp_enqueue_script( 'aar_product_search', plugin_dir_url( __FILE__ ) . '/assets/js/aar_product_search.js', array( 'jquery', 'select2' ), 'AAR_VERSION', true );
+		wp_localize_script( 'aar_product_search-ajax-script', 'aar_product_search_ajax_obj', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 	}
 
 	/**
@@ -83,9 +84,13 @@ class Auto_Add_To_Cart_Rules {
 	 */
 	public function aar_error_notice() {
 
-		echo '<div class="error">
-	        		<p><b>Auto Add To Cart Rules is enabled but not effective. It requires  WooCommerce Plugin activated in order to work.</b></p>
-	        	 </div>';
+		?>
+		<div class='error'>
+		<p><b>
+				<?php esc_attr_e( 'Auto Add To Cart Rules is enabled but not effective. It requires  WooCommerce Plugin activated in order to work.', 'auto-addtocart-rules' ); ?>
+			</b></p>
+		</div>
+		<?php
 	}
 
 	/**
@@ -93,7 +98,7 @@ class Auto_Add_To_Cart_Rules {
 	 *
 	 * @return bool $check true if WooCommerce Plugin is active else false.
 	 */
-	public function is_woocommerce_active() {
+	public function aar_is_woocommerce_active() {
 		$check          = false;
 		$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
 
@@ -106,7 +111,7 @@ class Auto_Add_To_Cart_Rules {
 	/**
 	 * This function will load the text domain
 	 */
-	public function load_plugin_textdomain() {
+	public function aar_load_plugin_textdomain() {
 
 		load_plugin_textdomain( 'auto-addtocart-rules', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
@@ -116,7 +121,7 @@ class Auto_Add_To_Cart_Rules {
 	 */
 	public function aar_add_admin_menu() {
 
-		add_submenu_page( 'woocommerce', 'Add To Cart Rules', 'Add To Cart Rules', 'manage_options', 'aar_cart_products_automatically', array( 'Aar_settings', 'aar_options_page' ) );
+		add_submenu_page( 'woocommerce', esc_attr_e( 'Add To Cart Rules', 'auto-addtocart-rules' ), esc_attr_e( 'Add To Cart Rules', 'auto-addtocart-rules' ), 'manage_options', 'aar_cart_products_automatically', array( 'Aar_settings', 'aar_options_page' ) );
 
 	}
 
@@ -125,7 +130,7 @@ class Auto_Add_To_Cart_Rules {
 	 *
 	 * @return bool "false" when customer has already at least one order (true if not)
 	 */
-	public function is_order_available() {
+	public function aar_is_order_available() {
 
 		$args = array(
 			'customer_id' => get_current_user_id(),
@@ -140,7 +145,7 @@ class Auto_Add_To_Cart_Rules {
 	 *
 	 * @return bool $user as per different conditions.
 	 */
-	public function check_user_role() {
+	public function aar_check_user_role() {
 
 		$aar_user = get_option( 'aar_user' );
 		$user     = true;
@@ -151,7 +156,7 @@ class Auto_Add_To_Cart_Rules {
 
 				$aar_firstorder = get_option( 'aar_firstorder' );
 				if ( '1' === $aar_firstorder ) {
-					$user = $this->is_order_available();
+					$user = $this->aar_is_order_available();
 				} else {
 					$user = true;
 				}
@@ -178,7 +183,7 @@ class Auto_Add_To_Cart_Rules {
 				$aar_firstorder = get_option( 'aar_firstorder' );
 
 				if ( '1' === $aar_firstorder ) {
-					$user = $this->is_order_available();
+					$user = $this->aar_is_order_available();
 				} else {
 					$user = true;
 				}
@@ -198,19 +203,21 @@ class Auto_Add_To_Cart_Rules {
 	 */
 	public function aar_add_oneproduct_to_cart( $item_key, $product_id ) {
 
-		$user_role = $this->check_user_role();
+		$user_role        = $this->aar_check_user_role();
+		$aar_checkfreeprd = get_option( 'aar_checkfreeprd' );
 
 		if ( $user_role ) {
 
-			if ( get_option( 'aar_checkfreeprd' ) === '1' ) {
+			if ( '1' === $aar_checkfreeprd ) {
 
 				$remove              = true;
 				$aar_one             = get_option( 'aar_oneprd' );
 				$aar_free            = get_option( 'aar_freeprd' );
+				$aar_removefreeprd   = get_option( 'aar_removefreeprd' );
 				$aar_freeprd         = $aar_free['productid'];
 				$product_category_id = $aar_one['productid'];
 
-				if ( get_option( 'aar_removefreeprd' ) === '1' ) {
+				if ( '1' === $aar_removefreeprd ) {
 
 					if ( isset( WC()->session ) && ! is_null( WC()->session->get( 'removed_cart_contents' ) ) && WC()->session->get( 'removed_cart_contents' ) !== '' ) { // checking is any products is removed or not.
 
@@ -283,11 +290,12 @@ class Auto_Add_To_Cart_Rules {
 	 */
 	public function aar_add_freeproduct_to_cart() {
 
-		$user_role = $this->check_user_role();
+		$user_role          = $this->aar_check_user_role();
+		$aar_checktotalcart = get_option( 'aar_checktotalcart' );
 
 		if ( $user_role ) {
 
-			if ( get_option( 'aar_checktotalcart' ) === '1' ) {
+			if ( '1' === $aar_checktotalcart ) {
 
 				$remove = true;
 				global $woocommerce;
@@ -304,7 +312,7 @@ class Auto_Add_To_Cart_Rules {
 					$free_product_id = $value;
 				}
 
-				$remove = $this->ct_remove_product();
+				$remove = $this->aar_ct_remove_product();
 
 				if ( $remove ) {
 
@@ -398,11 +406,11 @@ class Auto_Add_To_Cart_Rules {
 	 */
 	public function aar_add_visitproduct_to_cart() {
 
-		$user_role = $this->check_user_role();
-
+		$user_role      = $this->aar_check_user_role();
+		$aar_checkvisit = get_option( 'aar_checkvisit' );
 		if ( $user_role ) {
 
-			if ( get_option( 'aar_checkvisit' ) === '1' ) {
+			if ( '1' === $aar_checkvisit ) {
 
 				if ( ! is_admin() && ! is_cart() && ! is_checkout() ) {
 
@@ -444,9 +452,10 @@ class Auto_Add_To_Cart_Rules {
 	/**
 	 * This function will remove the automatically added product when the product is removed by the user.
 	 */
-	public function remove_product_from_cart() {
+	public function aar_remove_product_from_cart() {
+		$aar_checkfreeprd = get_option( 'aar_checkfreeprd' );
 
-		if ( get_option( 'aar_checkfreeprd' ) === '1' ) {
+		if ( '1' === $aar_checkfreeprd ) {
 
 			$aar_one     = get_option( 'aar_oneprd' );
 			$aar_freeprd = get_option( 'aar_freeprd' );
@@ -492,7 +501,7 @@ class Auto_Add_To_Cart_Rules {
 	/**
 	 * This function will not automatically add the product to the cart once it is removed by the customer.
 	 */
-	public function ct_remove_product() {
+	public function aar_ct_remove_product() {
 
 		$remove                  = true;
 		$aar_removetotalfreeprd  = get_option( 'aar_removetotalfreeprd' );
@@ -536,16 +545,19 @@ class Auto_Add_To_Cart_Rules {
 	 * @param array $cart_object Cart object.
 	 */
 	public function aar_setprice( $cart_object ) {
+		$aar_price = get_option( 'aar_price' );
 
-		if ( get_option( 'aar_price' ) === '1' ) {
+		if ( '1' === $aar_price ) {
 
 			$atc_free_product_ids = '';
 			$ct_free_product_ids  = '';
 			$wvf_free_product_ids = '';
+			$aar_checkfreeprd     = get_option( 'aar_checkfreeprd' );
+			$aar_checktotalcart   = get_option( 'aar_checktotalcart' );
+			$aar_checkvisit       = get_option( 'aar_checkvisit' );
+			$custom_price         = 0; // This will be your custome price.
 
-			$custom_price = 0; // This will be your custome price.
-
-			if ( get_option( 'aar_checkfreeprd' ) === '1' ) {
+			if ( '1' === $aar_checkfreeprd ) {
 
 				$aar_free    = get_option( 'aar_freeprd' );
 				$aar_freeprd = $aar_free['productid'];
@@ -554,7 +566,7 @@ class Auto_Add_To_Cart_Rules {
 				}
 			}
 
-			if ( get_option( 'aar_checktotalcart' ) === '1' ) {
+			if ( '1' === $aar_checktotalcart ) {
 
 				$free_product = get_option( 'aar_totalcart' );
 				$array        = array_values( $free_product );
@@ -567,7 +579,7 @@ class Auto_Add_To_Cart_Rules {
 				}
 			}
 
-			if ( get_option( 'aar_checkvisit' ) === '1' ) {
+			if ( '1' === $aar_checkvisit ) {
 
 				$product_id = get_option( 'aar_visit' );
 				$array      = array_values( $product_id );

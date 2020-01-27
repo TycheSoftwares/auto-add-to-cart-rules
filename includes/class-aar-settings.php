@@ -16,14 +16,14 @@ class Aar_Settings {
 	 * Class Constructer
 	 */
 	public function __construct() {
-		add_action( 'admin_init', array( $this, 'settings_init' ) );
+		add_action( 'admin_init', array( $this, 'aar_settings_init' ) );
 	}
 
 	/**
 	 * This function is for section heading on menu page
 	 * & register settings in the database
 	 */
-	public function settings_init() {
+	public function aar_settings_init() {
 		register_setting( 'pluginPage', 'aar_user' );
 		register_setting( 'pluginPage', 'aar_firstorder' );
 		register_setting( 'pluginPage', 'aar_oneprd' );
@@ -292,7 +292,7 @@ class Aar_Settings {
 		);
 		$atc_cat = get_categories( $atc_prd );
 		?>
-		<select id="atc_wc_cat_search"
+		<select id="aar_atc_wc_cat_search"
 				multiple="multiple" 
 				style="width: 50%;" 
 				name="aar_oneprd[productid][]">
@@ -328,7 +328,7 @@ class Aar_Settings {
 		);
 		$atc_product_object = new WP_Query( $atc_freeprd );
 		?>
-		<select id="atc_wc_product_search"
+		<select id="aar_atc_wc_product_search"
 				multiple="multiple" 
 				style="width: 50%;" 
 				name="aar_freeprd[productid][]">
@@ -408,14 +408,13 @@ class Aar_Settings {
 		);
 		$ct_product_object = new WP_Query( $ct_freeprd );
 		?>
-		<select id="ct_wc_product_search"
+		<select id="aar_ct_wc_product_search"
 				multiple="multiple" 
 				style="width: 50%;" 
 				name="aar_totalcart[productid][]">
 		<?php
 		if ( $ct_product_object->have_posts() ) {
 			$product_posts = $ct_product_object->get_posts();
-
 			foreach ( $product_posts as $key => $product ) {
 					$ct_product_id    = $product->ID;
 					$ct_product_title = $product->post_title;
@@ -476,7 +475,7 @@ class Aar_Settings {
 		);
 		$wv_product_object = new WP_Query( $wv_freeprd );
 		?>
-		<select id="wv_wc_product_search"
+		<select id="aar_wv_wc_product_search"
 				multiple="multiple" 
 				style="width: 50%;" 
 				name="aar_visit[productid][]">
