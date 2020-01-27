@@ -71,8 +71,8 @@ class Auto_Add_To_Cart_Rules {
 	 * For Enqueuing JS script
 	 */
 	public function aar_enqueue_script() {
-		wp_enqueue_style( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css', 'AAR_VERSION', true );
-		wp_enqueue_script( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js', array( 'jquery' ), 'AAR_VERSION', true );
+		wp_register_script( 'select2', plugins_url() . '/woocommerce/assets/js/select2/select2.min.js', array( 'jquery', 'jquery-ui-widget', 'jquery-ui-core' ), 'AAR_VERSION', false );
+		wp_enqueue_script( 'select2' );
 		wp_enqueue_script( 'aar_product_search', plugin_dir_url( __FILE__ ) . '/assets/js/aar_product_search.js', array( 'jquery', 'select2' ), 'AAR_VERSION', true );
 		wp_localize_script( 'aar_product_search-ajax-script', 'aar_product_search_ajax_obj', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 	}
