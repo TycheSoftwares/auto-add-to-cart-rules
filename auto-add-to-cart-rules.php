@@ -87,7 +87,7 @@ class Auto_Add_To_Cart_Rules {
 		?>
 		<div class='error'>
 		<p><b>
-				<?php esc_attr_e( 'Auto Add To Cart Rules is enabled but not effective. It requires  WooCommerce Plugin activated in order to work.', 'auto-addtocart-rules' ); ?>
+				<?php esc_attr( 'Auto Add To Cart Rules is enabled but not effective. It requires  WooCommerce Plugin activated in order to work.', 'auto-addtocart-rules' ); ?>
 			</b></p>
 		</div>
 		<?php
@@ -121,7 +121,7 @@ class Auto_Add_To_Cart_Rules {
 	 */
 	public function aar_add_admin_menu() {
 
-		add_submenu_page( 'woocommerce', esc_attr_e( 'Add To Cart Rules', 'auto-addtocart-rules' ), esc_attr_e( 'Add To Cart Rules', 'auto-addtocart-rules' ), 'manage_options', 'aar_cart_products_automatically', array( 'Aar_settings', 'aar_options_page' ) );
+		add_submenu_page( 'woocommerce', esc_attr( 'Add To Cart Rules', 'auto-addtocart-rules' ), esc_attr( 'Add To Cart Rules', 'auto-addtocart-rules' ), 'manage_options', 'aar_cart_products_automatically', array( 'Aar_settings', 'aar_options_page' ) );
 
 	}
 
