@@ -1,20 +1,20 @@
 === Auto Add To Cart Rules ===
-Contributors: shasvat
-Tags: add to cart, free product, woocommerce
+Contributors: shasvat, tychesoftwares, kartikparmar
+Tags: automatically add product, add product automatically, adding woocommerce product, automatically add WooCommerce product to cart 
 Author URI: https://www.tychesoftwares.com/
 Requires at least: 5.2
-Tested up to: 5.2
-Requires PHP: 4.3
+Tested up to: 5.3.2
+Requires PHP: 5.6
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://www.paypal.me/TycheSoftwares
 
-Plugin is useful in woocommerce to automatically add the product to the cart when different conditions are matched.
+Plugin is useful in WooCommerce to automatically add the product to the cart when different conditions are matched.
 
 == Description ==
 
-This plugin is very usefull for the woocommerce store owners to automatically add the products to the cart based on the different scenarios when 
+This plugin is very usefull for the WooCommerce store owners to automatically add the products to the cart based on the different scenarios when 
 
 the particular conditions are matched the products selected for the particular scenarios will be added automatically to the cart..
 
@@ -108,6 +108,7 @@ Method 3:
 <li> After installation, click on Activate Plugin link to activate the plugin. </li>
 </ol>
 
+== Frequently asked questions ==
 
 = Is multiple scenarios possible ? =
 
@@ -116,6 +117,26 @@ Yes. It is possible to select multiple scenarios.
 = What happens if selected scenario have not selct the product to be added automatically ? =
 
 Error will be shown on the cart page.
+
+= Is there option to add product automatically to cart when cart total reached to some amount? =
+
+Yes. There is an option available for that.
+
+= Option available to add product automatically to cart based on different category product is added to cart? =
+
+Yes. There is an option in which you can select different category.
+
+= Can we apply rules only if the customer is logged in? =
+
+Yes. There is an option to select the user role in which the functions will work only for that selected user.
+
+= Product which will be automatically added to cart will be free? =
+
+Its depends on the admin. There is an option given to make the price of automatically added product to 0.
+
+= Is there an option to add product automatically to cart when customer visits website? =
+
+Yes. There is an option to add product automatically to cart when customer visits website.
 
 == Screenshots ==
 
