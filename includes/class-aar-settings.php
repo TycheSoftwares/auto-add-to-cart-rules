@@ -54,7 +54,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_user',
-			__( 'Select User Role', 'auto-addtocart-rules' ),
+			__( 'Type of User', 'auto-addtocart-rules' ),
 			array( $this, 'aar_user_select' ),
 			'pluginPage',
 			'aar_user_login'
@@ -76,7 +76,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_price',
-			__( 'Gift A Product', 'auto-addtocart-rules' ),
+			__( 'Set product as free', 'auto-addtocart-rules' ),
 			array( $this, 'aar_set_price' ),
 			'pluginPage',
 			'aar_user_login'
@@ -87,7 +87,7 @@ class Aar_Settings {
 		 */
 		add_settings_section(
 			'aar_atc_add_to_cart_action',
-			__( 'Add to Cart Action', 'auto-addtocart-rules' ),
+			__( ' Add to Cart Action Settings', 'auto-addtocart-rules' ),
 			array( $this, 'aar_atc_settings_add_to_cart_action' ),
 			'pluginPage'
 		);
@@ -97,7 +97,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_atc_checkfreeprd',
-			__( 'Enable', 'auto-addtocart-rules' ),
+			__( 'Enable Add to Cart Action Rule', 'auto-addtocart-rules' ),
 			array( $this, 'aar_atc_product_enable' ),
 			'pluginPage',
 			'aar_atc_add_to_cart_action'
@@ -108,7 +108,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_oneprd',
-			__( 'Multiple Category\'s', 'auto-addtocart-rules' ),
+			__( 'Select Categories', 'auto-addtocart-rules' ),
 			array( $this, 'aar_atc_category' ),
 			'pluginPage',
 			'aar_atc_add_to_cart_action'
@@ -119,7 +119,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_freeprd',
-			__( 'Multple Product\'s', 'auto-addtocart-rules' ),
+			__( 'Select Products', 'auto-addtocart-rules' ),
 			array( $this, 'aar_atc_product' ),
 			'pluginPage',
 			'aar_atc_add_to_cart_action'
@@ -130,7 +130,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_removefreeprd',
-			__( 'Enable', 'auto-addtocart-rules' ),
+			__( 'Don\'t add upon removal', 'auto-addtocart-rules' ),
 			array( $this, 'aar_atc_remove_product' ),
 			'pluginPage',
 			'aar_atc_add_to_cart_action'
@@ -141,7 +141,7 @@ class Aar_Settings {
 		 */
 		add_settings_section(
 			'aar_ct_cart_total',
-			__( 'Cart Total', 'auto-addtocart-rules' ),
+			__( 'Cart Total Reaches Certain Amount Setting', 'auto-addtocart-rules' ),
 			array( $this, 'aar_ct_settings_cart_total' ),
 			'pluginPage'
 		);
@@ -151,7 +151,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_checktotalcart',
-			__( 'Enable', 'auto-addtocart-rules' ),
+			__( 'Enable Cart Total Rule', 'auto-addtocart-rules' ),
 			array( $this, 'aar_ct_enable' ),
 			'pluginPage',
 			'aar_ct_cart_total'
@@ -173,7 +173,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_totalcart',
-			__( 'Product', 'auto-addtocart-rules' ),
+			__( 'Select Product(s)', 'auto-addtocart-rules' ),
 			array( $this, 'aar_ct_product' ),
 			'pluginPage',
 			'aar_ct_cart_total'
@@ -184,7 +184,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_removetotalfreeprd',
-			__( 'Enable', 'auto-addtocart-rules' ),
+			__( 'Don\'t add upon removal', 'auto-addtocart-rules' ),
 			array( $this, 'aar_ct_remove_product' ),
 			'pluginPage',
 			'aar_ct_cart_total'
@@ -195,7 +195,7 @@ class Aar_Settings {
 		 */
 		add_settings_section(
 			'aar_wvf_website_visit',
-			__( 'Website Visit', 'auto-addtocart-rules' ),
+			__( 'Website Visit Settings', 'auto-addtocart-rules' ),
 			array( $this, 'aar_ct_settings_website_visit' ),
 			'pluginPage'
 		);
@@ -205,7 +205,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_checkvisit',
-			__( 'Enable', 'auto-addtocart-rules' ),
+			__( 'Enable Website Visit Rule', 'auto-addtocart-rules' ),
 			array( $this, 'aar_wvf_product_enable' ),
 			'pluginPage',
 			'aar_wvf_website_visit'
@@ -216,7 +216,7 @@ class Aar_Settings {
 		 */
 		add_settings_field(
 			'aar_visit',
-			__( 'Product', 'auto-addtocart-rules' ),
+			__( ' Select Product(s)', 'auto-addtocart-rules' ),
 			array( $this, 'aar_wvf_product' ),
 			'pluginPage',
 			'aar_wvf_website_visit'
@@ -242,7 +242,7 @@ class Aar_Settings {
 			<option value="both" <?php selected( 'both', $aar_user, true ); ?> >Both</option>
 		</select>
 		<?php
-			esc_attr_e( 'All scenarios will be affected only to the selected user.', 'auto-addtocart-rules' );
+			esc_attr_e( 'All rules will be affected only to the selected user type.', 'auto-addtocart-rules' );
 	}
 
 	/**
@@ -251,7 +251,7 @@ class Aar_Settings {
 	public function aar_first_order() {
 		$aar_firstorder = get_option( 'aar_firstorder' );
 		?>
-		<input type='checkbox' name='aar_firstorder' <?php checked( 1, $aar_firstorder, true ); ?> value='1'> <?php esc_attr_e( 'Enabling this will automatically add the product to cart only when the customer places their first order.', 'auto-addtocart-rules' ); ?>
+		<input type='checkbox' name='aar_firstorder' <?php checked( 1, $aar_firstorder, true ); ?> value='1'> <?php esc_attr_e( 'Enabling this option to apply rules on for first order of the user.', 'auto-addtocart-rules' ); ?>
 		<?php
 	}
 
@@ -272,7 +272,7 @@ class Aar_Settings {
 	public function aar_atc_product_enable() {
 		$aar_checkfreeprd = get_option( 'aar_checkfreeprd' );
 		?>
-		<input type='checkbox' name='aar_checkfreeprd' <?php checked( 1, $aar_checkfreeprd, true ); ?> value='1'> <?php esc_attr_e( 'Enable this to automatically add multiple product to the cart when the product of multiple category is added to cart..', 'auto-addtocart-rules' ); ?>
+		<input type='checkbox' name='aar_checkfreeprd' <?php checked( 1, $aar_checkfreeprd, true ); ?> value='1'> <?php esc_attr_e( 'Enable this to automatically add product(s) to the cart when the product of particular category is added to cart.', 'auto-addtocart-rules' ); ?>
 		<?php
 	}
 
@@ -280,10 +280,12 @@ class Aar_Settings {
 	 * This function will create the text box for category id in add to cart function
 	 */
 	public function aar_atc_category() {
+
 		$aar_oneprd = get_option( 'aar_oneprd' );
 
 		if ( ! $aar_oneprd ) {
-			$aar_oneprd = '';
+			$aar_oneprd              = array();
+			$aar_oneprd['productid'] = array();
 		}
 
 		$atc_prd = array(
@@ -300,13 +302,17 @@ class Aar_Settings {
 		foreach ( $atc_cat as $key => $product ) {
 			$atc_product_id    = $product->term_id;
 			$atc_product_title = $product->name;
-			$product_id_int    = array_map( 'intval', $aar_oneprd['productid'] );
-			$selected          = in_array( $atc_product_id, $product_id_int, true ) ? ' selected="selected" ' : '';
+			if ( ! $aar_oneprd['productid'] ) {
+				$product_id_int = array();
+			} else {
+				$product_id_int = array_map( 'intval', $aar_oneprd['productid'] );
+			}
+			$selected = in_array( $atc_product_id, $product_id_int, true ) ? ' selected="selected" ' : '';
 			echo '<option value="' . esc_attr( $atc_product_id ) . '" ' . esc_attr( $selected ) . ' >' . wp_kses_post( $atc_product_title ) . '</option>';
 		}
 		?>
 		</select>
-		</br><p> <?php esc_attr_e( 'Select category\'s  on which function will work.', 'auto-addtocart-rules' ); ?></p>
+		</br><p> <?php esc_attr_e( 'Here you can select the list of category(s) which is assigned to product. Adding such product(s) to cart will add free product to cart.', 'auto-addtocart-rules' ); ?></p>
 		<?php
 
 	}
@@ -319,7 +325,8 @@ class Aar_Settings {
 		$aar_freeprd = get_option( 'aar_freeprd' );
 
 		if ( ! $aar_freeprd ) {
-			$aar_freeprd = '';
+			$aar_freeprd              = array();
+			$aar_freeprd['productid'] = array();
 		}
 
 		$atc_freeprd        = array(
@@ -339,15 +346,19 @@ class Aar_Settings {
 			foreach ( $product_posts as $key => $product ) {
 				$atc_product_id    = $product->ID;
 				$atc_product_title = $product->post_title;
-				$product_id_int    = array_map( 'intval', $aar_freeprd['productid'] );
-				$selected          = in_array( $atc_product_id, $product_id_int, true ) ? ' selected="selected" ' : '';
+				if ( ! $aar_freeprd['productid'] ) {
+					$product_id_int = array();
+				} else {
+					$product_id_int = array_map( 'intval', $aar_freeprd['productid'] );
+				}
+				$selected = in_array( $atc_product_id, $product_id_int, true ) ? ' selected="selected" ' : '';
 				echo '<option value="' . esc_attr( $atc_product_id ) . '" ' . esc_attr( $selected ) . ' >' . wp_kses_post( $atc_product_title ) . '</option>';
 			}
 		}
 
 		?>
 		</select>
-		</br><p> <?php esc_attr_e( 'Select product\'s which will be added to the cart when product of particular category is added to the cart.', 'auto-addtocart-rules' ); ?> </p>
+		</br><p> <?php esc_attr_e( 'Here you can select list of product(s) which will be added to cart when product of particular category is added to the cart.', 'auto-addtocart-rules' ); ?> </p>
 		<?php
 
 	}
@@ -397,9 +408,12 @@ class Aar_Settings {
 	 * This function will create the select2 for product  in cart total function
 	 */
 	public function aar_ct_product() {
+
 		$aar_totalcart = get_option( 'aar_totalcart' );
+
 		if ( ! $aar_totalcart ) {
-			$aar_totalcart = '';
+			$aar_totalcart              = array();
+			$aar_totalcart['productid'] = array();
 		}
 
 		$ct_freeprd        = array(
@@ -418,9 +432,13 @@ class Aar_Settings {
 			foreach ( $product_posts as $key => $product ) {
 					$ct_product_id    = $product->ID;
 					$ct_product_title = $product->post_title;
-					$product_id_int   = array_map( 'intval', $aar_totalcart['productid'] );
-					$selected         = in_array( $ct_product_id, $product_id_int, true ) ? ' selected="selected" ' : '';
-					echo '<option value="' . esc_attr( $ct_product_id ) . '" ' . esc_attr( $selected ) . ' >' . wp_kses_post( $ct_product_title ) . '</option>';
+				if ( ! $aar_totalcart['productid'] ) {
+					$product_id_int = array();
+				} else {
+					$product_id_int = array_map( 'intval', $aar_totalcart['productid'] );
+				}
+				$selected = in_array( $ct_product_id, $product_id_int, true ) ? ' selected="selected" ' : '';
+				echo '<option value="' . esc_attr( $ct_product_id ) . '" ' . esc_attr( $selected ) . ' >' . wp_kses_post( $ct_product_title ) . '</option>';
 			}
 		}
 
@@ -465,8 +483,10 @@ class Aar_Settings {
 	 */
 	public function aar_wvf_product() {
 		$aar_visit = get_option( 'aar_visit' );
+
 		if ( ! $aar_visit ) {
-			$aar_visit = '';
+			$aar_visit              = array();
+			$aar_visit['productid'] = array();
 		}
 
 		$wv_freeprd        = array(
@@ -486,14 +506,18 @@ class Aar_Settings {
 			foreach ( $product_posts as $key => $product ) {
 					$wv_product_id    = $product->ID;
 					$wv_product_title = $product->post_title;
-					$product_id_int   = array_map( 'intval', $aar_visit['productid'] );
-					$selected         = in_array( $wv_product_id, $product_id_int, true ) ? ' selected="selected" ' : '';
+				if ( ! $aar_visit['productid'] ) {
+					$product_id_int = array();
+				} else {
+					$product_id_int = array_map( 'intval', $aar_visit['productid'] );
+				}
+				$selected = in_array( $wv_product_id, $product_id_int, true ) ? ' selected="selected" ' : '';
 				echo '<option value="' . esc_attr( $wv_product_id ) . '" ' . esc_attr( $selected ) . ' >' . wp_kses_post( $wv_product_title ) . '</option>';
 			}
 		}
 		?>
 		</select>
-		</br><p> <?php esc_attr_e( 'Enter product which will be added to cart.', 'auto-addtocart-rules' ); ?></p>
+		</br><p> <?php esc_attr_e( 'Select product(s) which will be added to cart upon site visit.', 'auto-addtocart-rules' ); ?></p>
 		<?php
 	}
 
@@ -511,8 +535,7 @@ class Aar_Settings {
 		?>
 			<form action='options.php' method='post'>
 
-				<h2> <?php esc_attr_e( 'Automatically Add a Product Into Cart.', 'auto-addtocart-rules' ); ?></h2>
-				<p> <?php esc_attr_e( 'This will automatically add a product to your WooCommerce cart in 3 different scenarios.', 'auto-addtocart-rules' ); ?></p>
+				<h2> <?php esc_attr_e( 'Automatically Add Products to Cart.', 'auto-addtocart-rules' ); ?></h2>
 				</br>
 
 				<?php
