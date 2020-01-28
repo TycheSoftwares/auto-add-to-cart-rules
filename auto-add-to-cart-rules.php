@@ -235,7 +235,7 @@ class Auto_Add_To_Cart_Rules {
 					if ( isset( WC()->session ) && ! is_null( WC()->session->get( 'removed_cart_contents' ) ) && WC()->session->get( 'removed_cart_contents' ) !== '' ) { // checking is any products is removed or not.
 
 						$removed_cart_contents = WC()->session->get( 'removed_cart_contents' );
-
+						$list_of_removed_product = array();
 						foreach ( $removed_cart_contents as $key => $value ) {
 							$list_of_removed_product[] = $value['product_id'];
 						}
@@ -523,7 +523,7 @@ class Auto_Add_To_Cart_Rules {
 	public function aar_ct_remove_product() {
 
 		$aar_checktotalcart = '';
-		$aar_checktotalcart = get_option( $aar_checktotalcart );
+		$aar_checktotalcart = get_option( 'aar_checktotalcart' );
 		if ( '1' === $aar_checktotalcart ) {
 
 			$remove                 = true;
